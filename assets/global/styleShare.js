@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   header__box: {
     width: '100%',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     paddingHorizontal: res * 0.02,
   },
   header__title: {

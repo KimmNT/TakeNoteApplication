@@ -5,7 +5,7 @@ const colors = {
   // secondary: '#2ecc71',
   text: '#0F0F0F',
   background: '#FAF6F0',
-  light: '#F1F1F1',
+  light: '#F9F6EE',
 };
 
 export default colors;
