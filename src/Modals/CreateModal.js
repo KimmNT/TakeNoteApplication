@@ -38,8 +38,7 @@ const CreateModal = props => {
   const saveInfo = async () => {
     const day = new Date().getUTCDate();
     const month = new Date().getUTCMonth() + 1;
-    const year = new Date().getFullYear();
-    const currentDate = `${day}-${month}-${year}`;
+    const currentDate = `${day}-${month}`;
 
     try {
       // Save information to storage
@@ -49,6 +48,7 @@ const CreateModal = props => {
         priority: checked ? 'High' : 'Low',
         savedDate: currentDate,
         typeValue: value,
+        status: false,
       };
 
       const updatedInfo = [...storedInfo, newItem];
@@ -100,13 +100,15 @@ const CreateModal = props => {
       <View style={modalStyle.modal__container}>
         <View style={modalStyle.modal__width}>
           <View style={modalStyle.modal__content}>
-            <View style={modalStyle.modal__box}>
+            <View style={modalStyle.modal__box_container}>
               <Text style={modalStyle.modal__box_title}>Title</Text>
-              <TextInput
-                style={modalStyle.modal__box_input}
-                placeholder="Title of this note"
-                onChangeText={text => setTitleValue(text)}
-              />
+              <View style={modalStyle.modal__box}>
+                <TextInput
+                  style={modalStyle.modal__box_input}
+                  placeholder="Title of this note"
+                  onChangeText={text => setTitleValue(text)}
+                />
+              </View>
             </View>
             <View
               style={[

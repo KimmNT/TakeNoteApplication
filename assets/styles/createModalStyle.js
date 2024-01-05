@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(33,33,33,0.95)',
-    paddingVertical: res * 0.27,
+    paddingVertical: res * 0.22,
     paddingHorizontal: res * 0.06,
   },
   modal__width: {
@@ -20,6 +20,13 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: res * 0.01,
     flexDirection: 'column',
+    shadowColor: colors.light,
+    shadowOffset: {
+      width: -5,
+      height: 7,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     // justifyContent: 'space-between',
   },
   modal__close_btn: {
@@ -38,19 +45,23 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   modal__content: {
-    marginTop: res * 0.04,
+    marginTop: res * 0.02,
     paddingHorizontal: res * 0.02,
     width: '100%',
     height: '100%',
     gap: res * 0.03,
   },
-  modal__box: {
+  modal__box_container: {
     padding: res * 0.01,
     backgroundColor: colors.light,
-    borderRadius: res * 0.01,
+    width: '100%',
+  },
+  modal__box: {
     borderColor: colors.text,
     borderWidth: 1,
-    width: '100%',
+    paddingVertical: res * 0.02,
+    paddingHorizontal: res * 0.01,
+    borderRadius: res * 0.01,
   },
   one_line: {
     flexDirection: 'row',
@@ -65,6 +76,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     textTransform: 'uppercase',
     fontWeight: '600',
+    marginBottom: res * 0.01,
   },
   modal__box_input: {
     marginTop: res * 0.01,
