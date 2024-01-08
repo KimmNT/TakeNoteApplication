@@ -9,6 +9,7 @@ import {
   Dimensions,
   Modal,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 
@@ -51,6 +52,7 @@ export default function HomePage({navigation, route}) {
 
   const openCreateModal = () => {
     setCreateModalVisible(true);
+    loadStoredInfo();
   };
   const closeCreateModal = () => {
     setCreateModalVisible(false);
@@ -76,18 +78,27 @@ export default function HomePage({navigation, route}) {
     }
   };
   const handleDeleteItem = index => {
-    // Create a copy of the storedInfo array
-    const updatedInfo = [...storedInfo];
+    Alert.alert('Deleting', 'Do you want to delete this note ?', [
+      {text: 'Cancel', onPress: () => console.log('Cancel deleting')},
+      {
+        text: 'OK',
+        onPress: async () => {
+          // Create a copy of the storedInfo array
+          const updatedInfo = [...storedInfo];
 
-    // Remove the item at the specified index
-    updatedInfo.splice(index, 1);
+          // Remove the item at the specified index
+          updatedInfo.splice(index, 1);
 
-    // Update the state with the new array
-    setStoredInfo(updatedInfo);
+          // Update the state with the new array
+          setStoredInfo(updatedInfo);
 
-    // Optionally, you can persist the updated array in storage
-    storeData('storedInfo', updatedInfo);
+          // Persist the updated array in storage
+          await storeData('storedInfo', updatedInfo);
+        },
+      },
+    ]);
   };
+
   const handleDone = index => {
     // Create a copy of the storedInfo array
     const updatedInfo = [...storedInfo];
@@ -121,88 +132,34 @@ export default function HomePage({navigation, route}) {
     setStoredInfo(sortedInfo);
   };
 
-  storedInfo.map((item, index) => console.log(item.priority));
-
   return (
     <View style={shareStyle.container}>
       <View style={shareStyle.header__box}>
         <Text style={shareStyle.header__title}>NoteIt!</Text>
-        <View>
-          <TouchableOpacity onPress={sortItemsByPriority }>
-            <Text style={homeStyle.modal__box_title}>Priotiry</Text>
-            {/* <BouncyCheckbox
-              size={25}
-              fillColor="#FF9209"
-              // unfillColor="tomato"
-              // text="High Priority"
-              style={[homeStyle.modal__checkbox]}
-              iconStyle={{borderColor: 'red'}}
-              innerIconStyle={{borderWidth: 2}}
-              // onPress={sortItemsByPriority}
-              // isChecked={checked}
-            /> */}
-          </TouchableOpacity>
-          {/* <View
-            style={[
-              homeStyle.modal__box,
-              homeStyle.one_line,
-              {position: 'relative', zIndex: 100},
-            ]}>
-            <Text style={homeStyle.modal__box_title}>Type</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder={'Choose a type'}
-              style={[homeStyle.modal__dropdown]}
-            />
-          </View> */}
-          <View>
-            <Text style={homeStyle.modal__box_title}>Finished</Text>
-            <BouncyCheckbox
-              size={25}
-              fillColor="#FF9209"
-              // unfillColor="tomato"
-              // text="High Priority"
-              style={[homeStyle.modal__checkbox]}
-              iconStyle={{borderColor: 'red'}}
-              innerIconStyle={{borderWidth: 2}}
-              // onPress={handlePriority}
-              // isChecked={checked}
-            />
-          </View>
-        </View>
       </View>
       <ScrollView style={shareStyle.content}>
         <View style={[homeStyle.home__list_item]}>
           {storedInfo.map((note, index) => (
-            <View
+            <TouchableOpacity
               onLongPress={() => handleDeleteItem(index)}
               onPress={() => handleDone(index)}
               key={index}
-              style={homeStyle.home__item}>
-              {note.status ? (
-                <TouchableOpacity
-                  onPress={() => handleDone(index)}
-                  style={[homeStyle.home__item_true]}>
-                  <Text style={homeStyle.home__item_title}>
+              style={[homeStyle.home__item]}>
+              <View
+                style={[
+                  homeStyle.home__item_true,
+                  note.status && homeStyle.home__item_done, // Apply specific styles when status is true
+                ]}>
+                <View style={homeStyle.home__item_title_container}>
+                  <Text
+                    style={[
+                      homeStyle.home__item_title,
+                      note.status && homeStyle.home__item_title_done, // Apply specific styles for title when status is true
+                    ]}>
                     {note.titleInputValue}
                   </Text>
-                  <Text style={homeStyle.home__item_date}>
-                    {note.savedDate}
-                  </Text>
-                  <Text style={homeStyle.home__item_type}>
-                    {note.typeValue}
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <View style={[homeStyle.home__item_false]}>
-                  <Text style={homeStyle.home__item_title}>
-                    {note.titleInputValue}
-                  </Text>
+                </View>
+                <View style={homeStyle.home__item_status_container}>
                   <Text style={homeStyle.home__item_date}>
                     {note.savedDate}
                   </Text>
@@ -210,8 +167,8 @@ export default function HomePage({navigation, route}) {
                     {note.typeValue}
                   </Text>
                 </View>
-              )}
-            </View>
+              </View>
+            </TouchableOpacity>
           ))}
           <View></View>
         </View>

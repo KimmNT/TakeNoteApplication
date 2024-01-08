@@ -20,13 +20,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: res * 0.01,
     flexDirection: 'column',
-    shadowColor: colors.light,
-    shadowOffset: {
-      width: -5,
-      height: 7,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    borderWidth: 3,
+    borderColor: colors.text,
     // justifyContent: 'space-between',
   },
   modal__close_btn: {
@@ -98,9 +93,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.text,
   },
   modal__create_icon: {
-    color: colors.text,
+    color: colors.light,
     textTransform: 'uppercase',
     fontSize: res * 0.02,
     fontWeight: '600',

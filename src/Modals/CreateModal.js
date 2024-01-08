@@ -29,18 +29,23 @@ const CreateModal = props => {
     {label: 'Study', value: 'study'},
     {label: 'Exercise', value: 'exercise'},
     {label: 'Holiday', value: 'holiday'},
+    {label: 'Hobbies', value: 'hobbies'},
   ]);
-  useEffect(() => {
-    // Load stored information when the component mounts
-    loadStoredInfo();
-  }, []);
 
   const saveInfo = async () => {
     const day = new Date().getUTCDate();
     const month = new Date().getUTCMonth() + 1;
     const currentDate = `${day}-${month}`;
-
     try {
+      // Load stored information from storage
+      const info = await getData('storedInfo');
+
+      if (info && Array.isArray(info)) {
+        setStoredInfo(info);
+      } else {
+        setStoredInfo([]);
+      }
+
       // Save information to storage
       const newItem = {
         titleInputValue: titleValue,
@@ -65,34 +70,9 @@ const CreateModal = props => {
     }
   };
 
-  const loadStoredInfo = async () => {
-    try {
-      // Load stored information from storage
-      const info = await getData('storedInfo');
-
-      if (info && Array.isArray(info)) {
-        setStoredInfo(info);
-      } else {
-        // If the retrieved data is not an array, initialize storedInfo as an empty array
-        setStoredInfo([]);
-      }
-    } catch (error) {
-      console.error('Error loading information:', error);
-      // Handle the error appropriately, e.g., show a user-friendly message
-    }
-  };
-
   const handlePriority = () => {
     setChecked(!checked);
     setPriority(!checked ? 'High' : 'Low');
-  };
-
-  const deleteInfo = () => {
-    setStoredInfo([]);
-  };
-
-  const handleCloseModal = () => {
-    closeModal();
   };
 
   return (
